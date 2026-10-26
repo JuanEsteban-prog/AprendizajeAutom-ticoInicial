@@ -14,4 +14,6 @@
 - Definición del profesor: Es una subrama de la inteligencia artificial que estudia tipos de modelos que a más experiencia tiene un mejor desempeño. A más datos, mejore sresultados tendremos. Aprende automáticamente en el sentido que solo necesita más datos para tener mejores resultados, no tenemos que cambiar el modelo.
 **Perceptrón** -> Base de las redes neuronales, es publicado en 1958 por Frank Rosenblatt.
 
-## 
+## JupiterNotebooks
+Es un entorno iteractivo para compilar python. Se puede utilizar tanto local como en la nube en distintos entornos(GoogleCollab).
+ 
