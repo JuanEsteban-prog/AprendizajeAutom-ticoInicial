@@ -192,3 +192,4 @@ Averiguar como se mide la distancia si no se puede ir en línea recta, por ejemp
 La distancia 3 es lo mismo que la distancia 2 pero con un grado mayor de exponente. Pasa lo mismo con distancias mayores.
 
 REVISAR EL RESUMEN DE CLASE PARA TENER LAS FÓRMULAS(Solo usaremos d1 y d2).
+**Buscar un video de la utilidad de la distancia de mahalanobis.**
