@@ -8,3 +8,9 @@ La inercia es mejor que el diametro para medir la coherencia.
 Cada clúster tiene su inercia.
 ### Cohesión de silueta
 Mide la distancia promedio entre un putno y todos los demás puntos en el mismo clúster. 
+
+
+Tenemos un escenario, que tipo de modelo aplicamos: supervisado o no supervisado
+Tenemos este escenario, que vamos a priorizar, recall o precisión
+Tengo esta matriz de confusión, cuanto vale el recall.
+
