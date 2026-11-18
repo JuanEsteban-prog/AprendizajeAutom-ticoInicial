@@ -27,3 +27,24 @@ A diferencia del aprendizaje supervisado, en el aprendizaje no supervisado traba
 - Como los algoritmos de agrupamiento miden distancias matemáticas entre puntos para saber quién se parece a quién, si un atributo tiene números grandes (ej. salario en miles) y otro números pequeños (ej. edad), el atributo más grande dominará toda la distancia y deformará los grupos.
 
 - En clase se compararon técnicas como StandardScaler (media 0, varianza 1), MinMaxScaler (escala entre 0 y 1), Normalizer (escala cada fila a longitud unitaria) y RobustScaler (usa mediana y rango intercuartílico para resistir valores atípicos) para observar visualmente cuál separa mejor los clústeres en 2D.
+
+## Preguntas de cierre
+**Verficación de aprendizaje**
+1. ¿En qué se diferencia la pertenencia exclusiva de la pertenencia con superposición? ¿Puede un método jerárquico producir grupos exclusivos?
+    - Exclusiva vs. superposición: En la pertenencia exclusiva, cada dato pertenece única y exclusivamente a un solo grupo (como ocurre en k-Means). En la pertenencia con superposición, un mismo dato puede pertenecer a múltiples grupos simultáneamente con distintos grados de pertenencia o probabilidades (como en el clustering difuso).
+    - ¿Puede un método jerárquico producir grupos exclusivos? Sí. Aunque el agrupamiento jerárquico organiza los datos en una estructura de árbol anidado (dendrograma), en el momento en que haces un corte horizontal a un nivel de detalle específico, cada dato queda asignado de forma exclusiva a una única rama o clúster.
+
+2. En el ejemplo del cuaderno, ¿qué asignaciones de k-means cambian, si las hay, al transformar los datos y cómo explicarías esas diferencias?
+    - Datos originales (sin escalar): Como la Característica 2 está multiplicada por 10, su escala domina por completo las distancias euclídeas y k-Means divide los datos con un corte horizontal (arriba vs. abajo), asignando mal los puntos de la frontera central.
+    - Con StandardScaler y MinMaxScaler: Las asignaciones en la zona central cambian y el corte pasa a ser diagonal, separando correctamente las dos nubes reales. Esto ocurre porque ambos métodos transforman cada característica (columna) por separado, dejándolas en escalas comparables.
+    - Con Normalizer: Las asignaciones cambian por completo y deforman la estructura original, porque Normalizer transforma cada observación (fila) de forma individual (proyectando los puntos sobre un círculo unitario), alterando las distancias reales entre las nubes.
+
+**Preguntas de investigación**
+1. En un caso real de agrupamiento sin etiquetas, ¿qué variables y decisiones de escalado podrían cambiar la interpretación de los grupos y por qué?
+    - Selección de variables: Incluir identificadores (como un ID de cliente), códigos arbitrarios o variables irrelevantes distorsiona los clústeres, ya que los algoritmos de distancia los tratan como magnitudes numéricas reales. Asimismo, mezclar variables con unidades muy distintas (por ejemplo, ingresos anuales en miles frente a años de edad) hace que la variable de mayor magnitud defina por sí sola los grupos.
+    - Decisiones de escalado:
+      - No escalar provoca que los grupos se interpreten casi únicamente en función de la variable con mayor rango numérico
+      - Usar StandardScaler o MinMaxScaler frente a RobustScaler: Si existen valores atípicos extremos (outliers), MinMaxScaler y StandardScaler se ven afectados por esos extremos y aplastan al resto de los datos, mientras que RobustScaler preserva mejor la separación real al basarse en la mediana y los cuartiles.
+      - Usar Normalizer (por filas): Cambia por completo la interpretación de los grupos, pasando de agrupar por magnitud absoluta (cuánto gasta un cliente) a agrupar por proporción relativa (en qué porcentajes distribuye su gasto).
+
+2. 

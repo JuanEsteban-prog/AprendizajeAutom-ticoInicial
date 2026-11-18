@@ -19,14 +19,38 @@ A diferencia del agrupamiento jerárquico, aquí tú debes decirle al algoritmo 
 - Criterios de selección: Se utiliza el método del codo (graficar la inercia para distintos valores de $k$ y buscar el punto donde la curva dobla y deja de bajar drásticamente), pero el profesor recalca que siempre debe contrastarse con el coeficiente de silueta, el tamaño de los grupos y si tienen una interpretación lógica para el problema.   
 
 
-### Preguntas tipo entrevista
-- Pregunta 1: «Aplicaste k-Means a datos de clientes y obtuviste 3 clústeres, pero visualmente los datos tienen formas alargadas y no circulares. ¿Por qué k-Means falla aquí y qué alternativas propondrías?»
-    - Por qué falla: Porque k-Means asigna los puntos midiendo distancias euclídeas radiales desde un punto central (centroide), lo que asume implícitamente que los grupos son esféricos (circulares) y de tamaño similar. Al enfrentarse a formas alargadas o curvas, corta las formas por la mitad.
-    - Alternativas: Usar algoritmos basados en densidad como DBSCAN, Agrupamiento Jerárquico o Modelos de Mezclas Gaussianas (GMM) (que permiten formas elípticas/alargadas).
+## Preguntas Cierre
+**Verificación De Aprendizaje**
+1. ¿Cuáles son los pasos principales del algoritmo $k$-Means?
 
-- Pregunta 2: «Ejecuté k-Means 10 veces con los mismos datos y obtuve resultados ligeramente diferentes cada vez. ¿Por qué pasa y cómo lo solventas?»
-    - Por qué pasa: Porque k-Means depende de dónde caigan los centroides iniciales al azar; distintas inicializaciones pueden hacer que el algoritmo converja a diferentes mínimos locales.
-    - Cómo solventarlo:
-        1. Fijar una semilla aleatoria (random_state en Python) para que los resultados sean reproducibles al comparar configuraciones.
-        2. Probar múltiples inicializaciones automáticas (n_init en scikit-learn) para quedarse con la que logre menor inercia.
-        3. Usar el método de inicialización inteligente k-means++ en lugar de random, el cual separa estratégicamente los centroides iniciales para mejorar la estabilidad y velocidad de convergencia.
+   - Inicialización: Definir el número de clústeres $k$, inicializar los grupos vacíos $P \leftarrow \{p_1, p_2, \dots, p_k\}$ y seleccionar los $k$ centroides iniciales $\zeta_1, \zeta_2, \dots, \zeta_k$.
+
+   - Fase de asignación: Vaciar los clústeres del paso previo y asignar cada observación $d_i$ al clúster $p_j$ cuyo centroide $\zeta_j$ tenga la **distancia mínima** $d(d_i, \zeta_j)$.
+
+   - Fase de actualización: Recalcular la posición de cada centroide $\zeta_i$ como el **promedio** exacto de todos los puntos asignados a su clúster $p_i$.
+
+   - Condición de parada: Repetir iterativamente la asignación y la actualización hasta que los centroides dejen de cambiar de forma apreciable (convergencia) o se alcance el límite máximo de iteraciones.
+
+2. ¿Qué significa minimizar la inercia en el contexto de $k$-Means y cómo se relaciona con la calidad del agrupamiento? 
+    - Qué significa: Minimizar la suma de las distancias euclídeas al cuadrado entre cada observación y el centroide de su respectivo grupo.
+    - Relación con la calidad: Una inercia baja indica que los grupos son internamente compactos (alta cohesión). Sin embargo, una menor inercia no garantiza por sí sola un mejor agrupamiento, ya que la inercia siempre disminuye al aumentar $k$, incluso cuando se fragmentan los datos en grupos artificiales que dejan de ser útiles (en el extremo, si $k = N$, la inercia es 0 pero el modelo no sirve).
+
+3. ¿Cómo afecta la elección del valor de $k$ a los resultados del algoritmo y qué métodos existen para seleccionar un valor adecuado?
+    - Efecto del valor de $k$: Un $k$ demasiado pequeño agrupa observaciones muy distintas en un mismo clúster (subajuste), mientras que un $k$ demasiado grande divide grupos naturales en fragmentos sin sentido práctico.
+    - Métodos para seleccionarlo: Se utiliza el método del codo (graficar la inercia frente a $k$ y buscar el punto de inflexión donde la ganancia deja de ser fuerte) y debe contrastarse siempre con el coeficiente de silueta (que mide cohesión interna frente a separación entre grupos), el equilibrio en el tamaño de los clústeres y su interpretabilidad en el problema real. 
+
+**Preguntas tipo entrevista**
+1. Aplicaste $k$-Means a datos de clientes y obtuviste 3 clusters, pero visualmente los datos parecen tener formas alargadas y no circulares. ¿Por qué $k$-Means no funciona bien aquí y qué alternativas propondrías?
+    - Por qué no funciona bien: Porque $k$-Means asigna puntos midiendo distancias euclídeas en línea recta hacia un único punto central (centroide). Esto crea fronteras de decisión lineales (diagramas de Voronoi) y asume implícitamente que los clústeres son esféricos (circulares/isotrópicos) y de varianza similar, haciendo que corte por la mitad las estructuras alargadas o curvas. 
+    - Alternativas que propondría:
+      - Modelos de Mezclas Gaussianas (GMM): Usan matrices de covarianza que se adaptan perfectamente a clústeres con formas elípticas o alargadas en cualquier orientación.   
+      - DBSCAN: Agrupa por densidad de puntos contiguos, permitiendo descubrir clústeres de cualquier forma geométrica arbitraria o alargada e identificar ruido.   
+      - Agrupamiento Jerárquico (con enlace simple o promedio) o aplicar primero una transformación (como PCA) si el alargamiento se debe a correlación lineal entre variables.   
+
+2. Ejecuté $k$-Means 10 veces con los mismos datos y obtuve resultados ligeramente diferentes cada vez. ¿Cómo lo solventas?
+Esto ocurre porque el algoritmo es sensible a la ubicación aleatoria de los centroides iniciales y puede converger a distintos mínimos locales de inercia. Lo solvento aplicando tres medidas:   
+    - Usar inicialización `'k-means++'`: En lugar de elegir centroides iniciales completamente al azar (`'random'`), distribuye los centroides iniciales alejados entre sí para lograr convergencias más estables y consistentes.
+
+    - Aumentar el número de inicializaciones (`n_init`): Ejecutar el algoritmo múltiples veces con diferentes semillas internas y conservar automáticamente la solución que obtenga la menor inercia final.
+
+    - Fijar una semilla aleatoria (`random_state`): Garantiza resultados 100% reproducibles al comparar configuraciones o presentar el modelo.
