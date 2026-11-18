@@ -28,15 +28,13 @@ $$L(A, B) = \frac{1}{|A||B|} \sum_{x \in A} \sum_{y \in B} d(x, y)$$
 
 $$L(A, B) = d\left(\frac{1}{|A|} \sum_{x \in A} x, \frac{1}{|B|} \sum_{y \in B} y\right)$$
 
-```[cite: 3]
 
-```
 
 ### Ejercicio en clase
-[PrimeraParte](/Ejercicios_Resueltos/AgrupamientoJerarquico1.jpeg)
-[SegundaParte](/Ejercicios_Resueltos/AgrupamientoJerarquico2.jpeg)
-[TerceraParte](/Ejercicios_Resueltos/AgrupamientoJerarquico3.jpeg)
-[CuartaParte](/Ejercicios_Resueltos/AgrupamientoJerarquico4.jpeg)
+![PrimeraParte](/Ejercicios_Resueltos/AgrupamientoJerarquico1.jpeg)
+![SegundaParte](/Ejercicios_Resueltos/AgrupamientoJerarquico2.jpeg)
+![TerceraParte](/Ejercicios_Resueltos/AgrupamientoJerarquico3.jpeg)
+![CuartaParte](/Ejercicios_Resueltos/AgrupamientoJerarquico4.jpeg)
 
 
 
