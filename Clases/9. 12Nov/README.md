@@ -31,10 +31,10 @@ $$L(A, B) = d\left(\frac{1}{|A|} \sum_{x \in A} x, \frac{1}{|B|} \sum_{y \in B} 
 
 
 ### Ejercicio en clase
-![PrimeraParte](/Ejercicios_Resueltos/AgrupamientoJerarquico1.jpeg)
-![SegundaParte](/Ejercicios_Resueltos/AgrupamientoJerarquico2.jpeg)
-![TerceraParte](/Ejercicios_Resueltos/AgrupamientoJerarquico3.jpeg)
-![CuartaParte](/Ejercicios_Resueltos/AgrupamientoJerarquico4.jpeg)
+![PrimeraParte](/Imágenes/AgrupamientoJerarquico1.jpeg)
+![SegundaParte](/Imágenes/ImágenestoJerarquico2.jpeg)
+![TerceraParte](/Imágenes/ImágenestoJerarquico3.jpeg)
+![CuartaParte](/Imágenes/AgrupamientoJerarquico4.jpeg)
 
 
 
