@@ -33,3 +33,14 @@ $$L(A, B) = d\left(\frac{1}{|A|} \sum_{x \in A} x, \frac{1}{|B|} \sum_{y \in B} 
 ```
 
 ### Ejercicio en clase
+[PrimeraParte](/Ejercicios_Resueltos/AgrupamientoJerarquico1.jpeg)
+[SegundaParte](/Ejercicios_Resueltos/AgrupamientoJerarquico2.jpeg)
+[TerceraParte](/Ejercicios_Resueltos/AgrupamientoJerarquico3.jpeg)
+[CuartaParte](/Ejercicios_Resueltos/AgrupamientoJerarquico4.jpeg)
+
+
+
+### Preguntas tipo entrevista de la guía
+- Pregunta 1 (El problema del clúster gigante con enlace simple): Si aplicas enlace simple y obtienes un clúster gigante que absorbe casi todos los datos, estás sufriendo el efecto de encadenamiento (chaining effect). Como el enlace simple solo mira el par de puntos más cercano, basta con que haya una fila de puntos intermedios («puentes» o ruido) para que dos grupos distintos se unan en una larga cadena. Solución: Cambiar a enlace completo (que fuerza a que los clústeres sean compactos y esféricos al medir el punto más lejano) o enlace promedio.  
+
+- Pregunta 2 (Ventajas del método divisivo sobre el aglomerativo): Si solo necesitas dividir tus datos en unos pocos clústeres grandes (por ejemplo, 2 o 3 grupos), el divisivo es computacionalmente más eficiente porque puedes detenerlo tras 1 o 2 divisiones sin calcular todo el árbol hasta las hojas individuales; además, suele producir mejores particiones globales porque toma decisiones viendo la estructura completa del dataset desde el inicio, mientras que el aglomerativo toma decisiones locales irreversibles paso a paso
