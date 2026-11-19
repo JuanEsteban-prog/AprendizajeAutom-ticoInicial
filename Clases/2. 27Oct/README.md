@@ -193,3 +193,60 @@ La distancia 3 es lo mismo que la distancia 2 pero con un grado mayor de exponen
 
 REVISAR EL RESUMEN DE CLASE PARA TENER LAS FÓRMULAS(Solo usaremos d1 y d2).
 **Buscar un video de la utilidad de la distancia de mahalanobis.**
+
+# Apuntes de estudio 
+## 1. Tipos de Aprendizaje y Tareas
+
+* **Aprendizaje Supervisado:** Trabajas con un conjunto de datos etiquetado $D = \{(x_i, y_i)\}_{i=1}^m$, donde cada $x_i \in \mathbb{R}^n$ es un vector de características (tus columnas de entrada) y $y_i \in Y$ es la etiqueta o variable objetivo. El fin es hallar una función $f : \mathbb{R}^n \rightarrow \mathbb{R}$ tal que $f(x) \approx y$.
+  * **Clasificación:** La variable objetivo $y$ pertenece a un conjunto **finito y discreto** (ej. spam vs. no spam).
+  * **Regresión:** La variable objetivo $y$ pertenece a un conjunto **continuo** (ej. estimar el precio de una vivienda).
+* **Aprendizaje No Supervisado:** Trabajas con datos sin etiquetas $D = \{x_i\}_{i=1}^m$ para descubrir estructuras ocultas.
+  * **Agrupamiento:** Busca una función $f : \mathbb{R}^n \rightarrow \{1, 2, \dots, k\}$ que asigne cada instancia a uno de $k$ clústeres.
+  * **Trampa práctica de la clase:** Tener una columna etiqueta (como el precio de las casas) **no te obliga** a hacer aprendizaje supervisado; el tipo de aprendizaje depende del propósito del análisis (si buscas perfiles de viviendas, puedes ignorar el precio y agruparlas).
+  
+## 2. Métricas de Distancia 
+
+Para que una función $d : X \times X \rightarrow \mathbb{R}$ sea formalmente una **métrica**, debe cumplir 4 axiomas para todo $x, y, z \in X$: **no negatividad** ($d(x, y) \geq 0$), **identidad** ($d(x, y) = 0 \iff x = y$), **simetría** ($d(x, y) = d(y, x)$) y **desigualdad triangular** ($d(x, z) \leq d(x, y) + d(y, z)$).
+
+Para que veas cada fórmula en acción, usaremos los puntos de ejemplo $x = (1, 2)$ y $y = (4, 6)$ (cuya diferencia es $x - y = (-3, -4)$).
+
+* **Distancia de Manhattan ($d_1$):** Suma las diferencias absolutas coordenada por coordenada (como caminar por cuadras de una ciudad):
+
+  $$d_1(x, y) = \sum_{i=1}^n |x_i - y_i|$$
+
+  *Ejemplo:* $|1 - 4| + |2 - 6| = 3 + 4 = 7$.
+
+* **Distancia Euclidiana ($d_2$):** Es la distancia en línea recta (Teorema de Pitágoras generalizado):
+
+  $$d_2(x, y) = \sqrt{\sum_{i=1}^n (x_i - y_i)^2} = \sqrt{(x - y)^T(x - y)}$$
+
+  *Ejemplo:* $\sqrt{(1 - 4)^2 + (2 - 6)^2} = \sqrt{9 + 16} = \sqrt{25} = 5$.  
+  *(Cuidado práctico: Tanto Euclidiana como Manhattan cambian si modificas las unidades o escalas de tus variables).*
+
+* **Distancia de Minkowski ($d_p$):** Es la fórmula «madre» que generaliza las dos anteriores mediante un parámetro $p \geq 1$:
+
+  $$d_p(x, y) = \left( \sum_{i=1}^n |x_i - y_i|^p \right)^{1/p}$$
+
+  Si $p = 1$ obtienes **Manhattan**, y si $p = 2$ obtienes **Euclidiana**. Cuanto mayor es $p$, más peso le da a la coordenada con mayor diferencia.
+
+* **Distancia de Mahalanobis ($d_M$):** Es una distancia euclidiana «corregida» usando la inversa de la **matriz de covarianza** $S$ (simétrica y definida positiva):
+
+  $$d_M(x, y) = \sqrt{(x - y)^T S^{-1} (x - y)}$$
+
+  * **Para qué sirve:** Al multiplicar por $S^{-1}$, elimina el efecto de las distintas escalas y toma en cuenta la **correlación** entre las variables.
+  * **Dos advertencias clave del examen práctico:**
+    1. Si la matriz de covarianza $S$ es **singular** (determinante 0, por ejemplo, cuando hay variables linealmente dependientes o muy pocas muestras), $S^{-1}$ no existe y no se puede calcular.
+    2. En problemas supervisados, la matriz $S$ debe estimarse **únicamente con los datos de entrenamiento** (para evitar fuga de datos).
+
+* **Distancia de Hamming ($d_H$):** Cuenta simplemente en cuántas posiciones difieren dos vectores (muy usada para variables binarias o categóricas):
+
+  $$d_H(x, y) = \sum_{i=1}^n \delta(x_i, y_i), \quad \text{donde } \delta(x_i, y_i) = \begin{cases} 0 & \text{si } x_i = y_i \\ 1 & \text{si } x_i \neq y_i \end{cases}$$
+
+  *Ejemplo:* Entre $(1, 2)$ y $(4, 6)$, ambas posiciones son distintas ($1 \neq 4$ y $2 \neq 6$), así que $d_H = 1 + 1 = 2$.
+
+* **Disimilitud Coseno ($d_{\cos}$):** Mide la diferencia en el **ángulo (dirección)** entre dos vectores no nulos, ignorando su tamaño o magnitud:
+
+  $$d_{\cos}(x, y) = 1 - \frac{x \cdot y}{\|x\|\|y\|}$$
+
+  * **Detalles críticos para el examen:** **No es una métrica ni una pseudométrica** porque puede violar la desigualdad triangular (por ejemplo, con $x = (1, 0)$, $y = (1, 1)$ y $z = (0, 1)$ se cumple $d(x, z) = 1 > 2 - \sqrt{2} = d(x, y) + d(y, z)$). Además, dos vectores distintos que apuntan en la misma dirección tienen disimilitud $0$, y no está definida para el vector nulo.
+

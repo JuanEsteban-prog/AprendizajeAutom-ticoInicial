@@ -61,3 +61,61 @@ Se suele tomar el 20% para la prueba y el 80% para el entrenamiento, esto se hac
 
 Esto depende de varios factores ya que entre más datos tengamos para entrenar más preciso es el modelo, pero también tenemos que tener la suficiente cantidad de datos para hacer la prueba, ya que de esta forma nos aseguramos que el modelo no se está aprendiendo las respuestas.
 
+## Más por el exámen
+## 1. Partición de datos y la regla de oro (`fit` vs. `transform`)
+
+Antes de tocar o transformar tus datos en un problema supervisado, debes dividirlos en tres conjuntos con roles distintos:
+
+* **Entrenamiento (*Train*):** Sirve para ajustar el modelo y aprender los parámetros de las transformaciones.
+* **Validación (*Validation*):** Sirve para tomar decisiones (como elegir modelos o hiperparámetros).
+* **Prueba (*Test*):** Se guarda intacto únicamente para la evaluación final.
+
+**Cómo evitar la fuga de información en Python:**
+Debes aprender las medias, desviaciones, mínimos, máximos, categorías y límites de intervalos **únicamente con el conjunto de entrenamiento**. Luego aplicas esos mismos parámetros ya aprendidos a validación y prueba:
+
+* `fit()` **aprende** los parámetros (se usa **solo** en entrenamiento).
+* `transform()` **aplica** la transformación (se usa en entrenamiento, validación y prueba sin volver a ajustar).
+
+*(Nota práctica: Al particionar, la **estratificación** conviene en problemas de clasificación para mantener la proporción de clases, pero no se aplica directamente sobre una variable objetivo continua como el precio de una casa).*
+
+## 2. Normalización y Estandarización (Fórmulas y trampas)
+
+Antes de aplicar cualquiera de estas fórmulas, debes identificar si existen **variables constantes** (donde todos los valores son iguales), ya que provocan divisiones para cero.
+
+| Técnica | Fórmula | Qué logra y sus límites clave |
+| :--- | :--- | :--- |
+| **Normalización por el máximo** | $x'_i = \frac{x_i}{\max(X)}$ | Requiere $\max(X) \neq 0$. No equivale a dividir por el máximo absoluto y, si hay valores negativos, no garantiza el rango $[0, 1]$. |
+| **Normalización Min-Max** | $x'_i = \frac{x_i - \min(X)}{\max(X) - \min(X)}$ | Requiere un rango no nulo ($\max \neq \min$). Lleva los datos de entrenamiento a $[0, 1]$, pero es muy sensible a valores extremos (*outliers*). |
+| **Estandarización (Z-score)** | $x'_i = \frac{x_i - \mu}{\sigma}$ | Requiere desviación estándar $\sigma \neq 0$. Deja los datos de ajuste con **media** $0$ y **varianza** $1$, pero **no fija un rango cerrado** ni convierte la distribución en una curva normal. |
+
+**Comprobación clásica de examen (Min-Max con datos nuevos):**[cite: 7]
+Si en entrenamiento tienes $\min = 10$ y $\max = 20$, y luego llega un dato nuevo de prueba con valor $25$, al aplicar la fórmula aprendida en entrenamiento obtienes:[cite: 7]
+
+$$x' = \frac{25 - 10}{20 - 10} = \frac{15}{10} = 1.5$$[cite: 7]
+
+## 3. Discretización de datos
+
+Consiste en transformar una variable numérica continua en $k$ intervalos (categorías) cuando eso aporta una interpretación útil, asumiendo que habrá cierta pérdida de detalle:
+
+* **Discretización de igual amplitud:** Divide el rango total en $k$ intervalos del mismo ancho matemático:
+
+$$\mathrm{Tamano~del~intervalo} = \frac{\max(X) - \min(X)}{k}$$
+
+
+* **Discretización de igual frecuencia:** Divide los datos en $k$ intervalos de modo que cada intervalo contenga aproximadamente la **misma cantidad de observaciones**. *(Advertencia: si hay muchos valores repetidos, puede ser imposible lograr frecuencias exactas).*
+
+Al igual que el escalado, los límites de los intervalos se aprenden solo con entrenamiento y se debe definir cómo asignar valores nuevos que caigan fuera de esos bordes.
+
+## 4. Datos Categóricos: Codificación One-Hot
+
+Cuando tienes una variable categórica nominal con $m$ categorías distintas (por ejemplo, `Color` = `{Rojo, Verde, Azul}`), la **codificación One-Hot** transforma cada categoría en un vector binario de longitud $m$, poniendo un `1` en la columna correspondiente a su categoría y `0` en las demás:
+
+* `Rojo` $\rightarrow$ `(1, 0, 0)`
+* `Verde` $\rightarrow$ `(0, 1, 0)`
+* `Azul` $\rightarrow$ `(0, 0, 1)`
+
+**Reglas prácticas para recordar:**
+
+* **Por qué se usa:** Permite representar categorías nominales sin inventar un orden falso entre ellas.
+* **Trampa de entrevista:** No toda columna con números debe estandarizarse; los códigos numéricos de una categoría (como un código de provincia o un ID) **no son magnitudes** y no deben escalarse con Z-score o Min-Max.
+* **Flujo correcto:** Las categorías válidas se aprenden solo con entrenamiento y debes definir de antemano cómo tratará el modelo a las categorías nuevas que aparezcan en prueba.
