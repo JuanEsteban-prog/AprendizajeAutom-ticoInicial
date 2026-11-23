@@ -43,3 +43,7 @@ Un modelo tiene una buena capacidad de generalización cuando obtiene resultados
         - k: La disnicia que queremos que tengan los grupos entre sí.
         - Una forma de ver la medida de los valores de la distncia se podría ocupar el promedio, al igual que a moda y la mediana.
         - Para hacer que el valor que más cerca está del punto aporte más podemos hacer un promedio ponderado.
+
+
+Una de las primeras cosas que tenemos que hacer es ver que tan bueno es el modelo durante el entrenamiento. Para hacerlo tenemos que comparar los predichos con las métricas de entrenamiento.
+
