@@ -47,3 +47,20 @@ Un modelo tiene una buena capacidad de generalización cuando obtiene resultados
 
 Una de las primeras cosas que tenemos que hacer es ver que tan bueno es el modelo durante el entrenamiento. Para hacerlo tenemos que comparar los predichos con las métricas de entrenamiento.
 
+enentrenamiento knn siemrpre nos va a salir perfecto con k = 1 (esto significa un sobreajuste), cualquier cosa que nos salga 100% en el entrenamiento puede ser que se trate de un sobreajuste. El modelo puede funcionar pero está sobreajustado por lo que es mejor buscar otro modelo que generalice mejor.
+
+Entre mayor sea la k peor va a ser el modelo, tanto en entrenamiento como en generalización. (Si le damos libertados al moderlo (K) elmodelo aprende, pero si le damos demasiadas libertades el modelo no aprende, hay que encontrar el equilibrio entre estos puntos.)
+
+
+### Preguntas de la clase
+1. ¿Cómo decide kNN la clase de un punto nuevo cuando k=3?
+Medir las distancias con el resto de puntos, tomar la más cernaca y luego elegit ya sea por votación o por ponderada elegir el punto.
+2. ¿Por qué es importante normalizar los datos antes de aplicar kNN?
+Porque es un modelo basado en distancias.
+3. ¿Cuáles son las principales ventajas y desventajas del algoritmo kNN?
+  - Ventasjas: Es muy rápido.
+  - Desventajas: Es conocido como un modelo perezoso/lazy model(cada vez que vamos a hacer una predicción el modelo tiene que volver a ver todos los datos. Es opr esto que se dice que en el entrenamiento no se entrena)
+
+
+Si aumento k de 1 a 100, ¿siempre mejorará la generalización del modelo porque considera más vecinos?
+NO
