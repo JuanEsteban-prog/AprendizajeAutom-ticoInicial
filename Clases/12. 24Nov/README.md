@@ -113,3 +113,6 @@ El parámetro `C` controla el equilibrio entre el margen de separación y los er
 - **C grande:** el modelo prioriza clasificar correctamente los datos de entrenamiento, aunque reduzca el margen.
 
 Por lo tanto, elegir correctamente el valor de `C` permite encontrar un equilibrio entre el sobreajuste (*overfitting*) y el subajuste (*underfitting*), mejorando la capacidad de generalización del modelo.
+
+
+RBF -> Aplicación del kernel radial
